@@ -95,4 +95,4 @@ To develop a secure and user-friendly IPL Ticket Booking System using Python Ful
 
 ## 👨‍💻 Developed By
 
-Akash Basagond Todalabagi
+Akash Todalabagi
