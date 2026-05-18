@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard – IPL 2026{% endblock %}
+
+{% block extra_head %}
+<style>
+    .admin-page { padding: 40px 0 80px; }
+
+    .admin-header {
+        background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+        border-radius: 20px;
+        padding: 28px 32px;
+        color: white;
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .admin-header h2 { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+    .admin-header p { font-size: 14px; opacity: 0.6; margin: 0; }
+
+    .admin-badge {
+        background: rgba(255,215,0,0.15);
+        border: 1px solid rgba(255,215,0,0.3);
+        color: #ffd700;
+        padding: 6px 16px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .data-table-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        margin-bottom: 28px;
+    }
+
+    .table-header {
+        background: #f9fafb;
+        border-bottom: 1px solid var(--border);
+        padding: 18px 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .table-header h4 { font-size: 16px; font-weight: 800; margin: 0; }
+
+    .table-count {
+        font-size: 12px;
+        background: #fee2e8;
+        color: var(--red);
+        padding: 3px 10px;
+        border-radius: 100px;
+        font-weight: 700;
+    }
+
+    table { width: 100%; border-collapse: collapse; }
+    thead th {
+        background: #f9fafb;
+        padding: 12px 24px;
+        text-align: left;
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    tbody td {
+        padding: 14px 24px;
+        font-size: 14px;
+        border-bottom: 1px solid #f5f5f5;
+        color: var(--text);
+    }
+
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: #fafafa; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-page">
+    <div class="page-content">
+        <div class="admin-header">
+            <div>
+                <h2>⚙️ Admin Dashboard</h2>
+                <p>Manage matches, bookings and users</p>
+            </div>
+            <div class="admin-badge">ADMIN</div>
+        </div>
+
+        <!-- Matches -->
+        <div class="data-table-card">
+            <div class="table-header">
+                <h4>📅 Matches</h4>
+                {% if matches %}<span class="table-count">{{ matches|length }}</span>{% endif %}
+            </div>
+            {% if matches %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th><th>Team 1</th><th>Team 2</th><th>Stadium</th><th>Date</th><th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for m in matches %}
+                    <tr>
+                        <td>{{ m[0] }}</td><td><strong>{{ m[1] }}</strong></td><td><strong>{{ m[2] }}</strong></td>
+                        <td>{{ m[3] }}</td><td>{{ m[4] }}</td><td>₹{{ m[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div style="padding:40px;text-align:center;color:var(--muted)">No matches found.</div>
+            {% endif %}
+        </div>
+
+        <!-- Bookings -->
+        <div class="data-table-card">
+            <div class="table-header">
+                <h4>🎟️ All Bookings</h4>
+                {% if bookings %}<span class="table-count">{{ bookings|length }}</span>{% endif %}
+            </div>
+            {% if bookings %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th><th>Match</th><th>Stadium</th><th>Seats</th><th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for b in bookings %}
+                    <tr>
+                        <td>{{ b[0] }}</td><td>{{ b[1] }} vs {{ b[2] }}</td>
+                        <td>{{ b[3] }}</td><td>{{ b[4] }}</td>
+                        <td><strong style="color:var(--red)">₹{{ b[5] }}</strong></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <div style="padding:40px;text-align:center;color:var(--muted)">No bookings yet.</div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}

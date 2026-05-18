@@ -1,0 +1,267 @@
+{% extends 'base.html' %}
+{% block title %}Create Account – TATA IPL 2026{% endblock %}
+
+{% block extra_head %}
+<style>
+    .auth-page {
+        min-height: calc(100vh - 64px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+    }
+
+    .auth-container {
+        display: flex;
+        border-radius: 24px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+        width: 100%;
+        max-width: 900px;
+    }
+
+    .auth-left {
+        flex: 1;
+        background: linear-gradient(135deg, #0a0a1a 0%, #1a0028 50%, #2d0014 100%);
+        padding: 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-left::before {
+        content: '🏆';
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        font-size: 180px;
+        opacity: 0.06;
+    }
+
+    .auth-left-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(232,0,45,0.2);
+        border: 1px solid rgba(232,0,45,0.4);
+        color: #ff6b8a;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 5px 14px;
+        border-radius: 100px;
+        letter-spacing: 0.5px;
+        margin-bottom: 24px;
+        width: fit-content;
+    }
+
+    .auth-left h2 {
+        font-size: 32px;
+        font-weight: 800;
+        color: white;
+        letter-spacing: -0.8px;
+        line-height: 1.15;
+        margin-bottom: 16px;
+    }
+
+    .auth-left h2 span { color: #ffd700; }
+    .auth-left p { font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+
+    .auth-perks { margin-top: 32px; display: flex; flex-direction: column; gap: 12px; }
+
+    .auth-perk {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(255,255,255,0.8);
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .auth-perk-icon {
+        width: 28px;
+        height: 28px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .auth-right { flex: 1; padding: 50px 40px; display: flex; flex-direction: column; justify-content: center; }
+    .auth-right h3 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; margin-bottom: 6px; }
+    .auth-right .sub { font-size: 14px; color: var(--muted); margin-bottom: 28px; }
+
+    .form-group { margin-bottom: 16px; }
+
+    .input-with-icon {
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+
+    .input-with-icon .ipl-input { padding-left: 44px; }
+
+    .input-icon {
+        position: absolute;
+        left: 14px;
+        font-size: 16px;
+        z-index: 1;
+        color: var(--muted);
+    }
+
+    .toggle-pw {
+        position: absolute;
+        right: 14px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 16px;
+        color: var(--muted);
+        padding: 0;
+    }
+
+    .error-msg {
+        font-size: 12px;
+        color: var(--red);
+        margin-top: 5px;
+        display: none;
+    }
+
+    .auth-submit {
+        width: 100%;
+        background: var(--red);
+        color: white;
+        border: none;
+        padding: 13px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 700;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 8px;
+    }
+
+    .auth-submit:hover {
+        background: var(--red-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(232,0,45,0.3);
+    }
+
+    .auth-footer-text { text-align: center; font-size: 14px; color: var(--muted); margin-top: 20px; }
+    .auth-footer-text a { color: var(--red); font-weight: 600; text-decoration: none; }
+    .auth-footer-text a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+        .auth-left { display: none; }
+        .auth-container { max-width: 440px; }
+        .auth-right { padding: 40px 28px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-left">
+            <div class="auth-left-badge">🎉 Join IPL 2026</div>
+            <h2>Get in the <span>Game</span></h2>
+            <p>Create your account and start booking tickets for the biggest cricket tournament in the world.</p>
+            <div class="auth-perks">
+                <div class="auth-perk"><div class="auth-perk-icon">🎟️</div> Book seats instantly</div>
+                <div class="auth-perk"><div class="auth-perk-icon">📱</div> Digital QR tickets</div>
+                <div class="auth-perk"><div class="auth-perk-icon">🍔</div> Pre-order stadium food</div>
+                <div class="auth-perk"><div class="auth-perk-icon">📊</div> Track your bookings</div>
+            </div>
+        </div>
+
+        <div class="auth-right">
+            <h3>Create account</h3>
+            <p class="sub">It's free and only takes a minute</p>
+
+            <form method="POST" onsubmit="return validateForm()">
+                <div class="form-group">
+                    <label class="ipl-label">Full Name</label>
+                    <div class="input-with-icon">
+                        <span class="input-icon">👤</span>
+                        <input type="text" id="name" name="name" class="ipl-input" placeholder="Your full name">
+                    </div>
+                    <div id="nameError" class="error-msg">Enter a valid name (min 3 letters)</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="ipl-label">Email address</label>
+                    <div class="input-with-icon">
+                        <span class="input-icon">✉️</span>
+                        <input type="email" id="email" name="email" class="ipl-input" placeholder="you@example.com">
+                    </div>
+                    <div id="emailError" class="error-msg">Enter a valid email address</div>
+                </div>
+
+                <div class="form-group">
+                    <label class="ipl-label">Password</label>
+                    <div class="input-with-icon">
+                        <span class="input-icon">🔒</span>
+                        <input type="password" id="password" name="password" class="ipl-input" placeholder="Min 6 chars, 1 number, 1 uppercase">
+                        <button type="button" class="toggle-pw" onclick="togglePassword()" id="toggleBtn">👁️</button>
+                    </div>
+                    <div id="passwordError" class="error-msg">Password must be 6+ chars with a number and uppercase letter</div>
+                </div>
+
+                <button type="submit" class="auth-submit">Create Account →</button>
+            </form>
+
+            <p class="auth-footer-text">
+                Already have an account? <a href="/login">Sign in</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function validateForm() {
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value;
+    let valid = true;
+
+    if (name.length < 3 || !/^[A-Za-z ]+$/.test(name)) {
+        document.getElementById("nameError").style.display = "block";
+        valid = false;
+    } else { document.getElementById("nameError").style.display = "none"; }
+
+    let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+    if (!email.match(emailPattern)) {
+        document.getElementById("emailError").style.display = "block";
+        valid = false;
+    } else { document.getElementById("emailError").style.display = "none"; }
+
+    let passPattern = /^(?=.*[A-Z])(?=.*\d).{6,}$/;
+    if (!password.match(passPattern)) {
+        document.getElementById("passwordError").style.display = "block";
+        valid = false;
+    } else { document.getElementById("passwordError").style.display = "none"; }
+
+    return valid;
+}
+
+function togglePassword() {
+    let field = document.getElementById("password");
+    let btn = document.getElementById("toggleBtn");
+    if (field.type === "password") {
+        field.type = "text";
+        btn.textContent = "🙈";
+    } else {
+        field.type = "password";
+        btn.textContent = "👁️";
+    }
+}
+</script>
+{% endblock %}

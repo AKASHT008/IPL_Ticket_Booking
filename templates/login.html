@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% block title %}Login – TATA IPL 2026{% endblock %}
+
+{% block extra_head %}
+<style>
+    .auth-page {
+        min-height: calc(100vh - 64px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+        background: #f5f5f5;
+    }
+
+    .auth-container {
+        display: flex;
+        border-radius: 24px;
+        overflow: hidden;
+        background: white;
+        box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+        width: 100%;
+        max-width: 900px;
+    }
+
+    .auth-left {
+        flex: 1;
+        background: linear-gradient(135deg, #0a0a1a 0%, #1a0028 50%, #2d0014 100%);
+        padding: 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .auth-left::before {
+        content: '🏏';
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        font-size: 180px;
+        opacity: 0.06;
+    }
+
+    .auth-left-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(232,0,45,0.2);
+        border: 1px solid rgba(232,0,45,0.4);
+        color: #ff6b8a;
+        font-size: 12px;
+        font-weight: 700;
+        padding: 5px 14px;
+        border-radius: 100px;
+        letter-spacing: 0.5px;
+        margin-bottom: 24px;
+        width: fit-content;
+    }
+
+    .auth-left h2 {
+        font-size: 32px;
+        font-weight: 800;
+        color: white;
+        letter-spacing: -0.8px;
+        line-height: 1.15;
+        margin-bottom: 16px;
+    }
+
+    .auth-left h2 span { color: #ffd700; }
+
+    .auth-left p {
+        font-size: 15px;
+        color: rgba(255,255,255,0.6);
+        line-height: 1.6;
+    }
+
+    .auth-perks {
+        margin-top: 32px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .auth-perk {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: rgba(255,255,255,0.8);
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .auth-perk-icon {
+        width: 28px;
+        height: 28px;
+        background: rgba(255,255,255,0.1);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        flex-shrink: 0;
+    }
+
+    .auth-right {
+        flex: 1;
+        padding: 60px 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .auth-right h3 {
+        font-size: 26px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin-bottom: 6px;
+    }
+
+    .auth-right .sub { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+
+    .form-group { margin-bottom: 20px; }
+
+    .auth-submit {
+        width: 100%;
+        background: var(--red);
+        color: white;
+        border: none;
+        padding: 13px;
+        border-radius: 12px;
+        font-size: 15px;
+        font-weight: 700;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 8px;
+    }
+
+    .auth-submit:hover {
+        background: var(--red-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(232,0,45,0.3);
+    }
+
+    .auth-footer-text {
+        text-align: center;
+        font-size: 14px;
+        color: var(--muted);
+        margin-top: 20px;
+    }
+
+    .auth-footer-text a { color: var(--red); font-weight: 600; text-decoration: none; }
+    .auth-footer-text a:hover { text-decoration: underline; }
+
+    @media (max-width: 700px) {
+        .auth-left { display: none; }
+        .auth-container { max-width: 440px; }
+        .auth-right { padding: 40px 28px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-page">
+    <div class="auth-container">
+        <div class="auth-left">
+            <div class="auth-left-badge">🔴 IPL 2026</div>
+            <h2>Welcome<br>Back to <span>IPL</span></h2>
+            <p>Login to access your tickets, bookings and match day experience.</p>
+            <div class="auth-perks">
+                <div class="auth-perk">
+                    <div class="auth-perk-icon">🎟️</div>
+                    Instant ticket access
+                </div>
+                <div class="auth-perk">
+                    <div class="auth-perk-icon">📱</div>
+                    QR code stadium entry
+                </div>
+                <div class="auth-perk">
+                    <div class="auth-perk-icon">⚡</div>
+                    Fast booking checkout
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-right">
+            <h3>Sign in</h3>
+            <p class="sub">Enter your credentials to continue</p>
+
+            <form method="POST">
+                <div class="form-group">
+                    <label class="ipl-label">Email address</label>
+                    <input type="email" name="email" class="ipl-input" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label class="ipl-label">Password</label>
+                    <input type="password" name="password" class="ipl-input" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="auth-submit">Login →</button>
+            </form>
+
+            <p class="auth-footer-text">
+                Don't have an account? <a href="/register">Create one</a>
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

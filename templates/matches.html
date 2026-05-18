@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+
+{% block title %}IPL Matches 2026 – Book Tickets{% endblock %}
+
+{% block extra_head %}
+<style>
+    .matches-hero {
+        background: linear-gradient(135deg, #0a0a1a 0%, #1a0028 100%);
+        padding: 40px 0 0;
+    }
+
+    .matches-hero-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px 40px;
+    }
+
+    .matches-hero h1 {
+        font-size: 36px;
+        font-weight: 800;
+        color: white;
+        letter-spacing: -0.8px;
+        margin-bottom: 6px;
+    }
+
+    .matches-hero p {
+        font-size: 15px;
+        color: rgba(255,255,255,0.6);
+    }
+
+    .match-card {
+        background: white;
+        border-radius: 16px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        transition: all 0.25s ease;
+    }
+
+    .match-card:hover {
+        box-shadow: 0 10px 32px rgba(0,0,0,0.12);
+        transform: translateY(-3px);
+    }
+
+    .match-card-header {
+        background: linear-gradient(135deg, #0a0a1a, #1a0028);
+        padding: 20px 24px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .match-card-header::after {
+        content: '🏏';
+        position: absolute;
+        right: -10px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 80px;
+        opacity: 0.08;
+    }
+
+    .match-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+    }
+
+    .match-number {
+        font-size: 11px;
+        font-weight: 700;
+        color: rgba(255,255,255,0.5);
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .match-live-badge {
+        background: var(--red);
+        color: white;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 100px;
+        letter-spacing: 0.5px;
+        animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    .match-teams {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    .team-block {
+        text-align: center;
+        flex: 1;
+    }
+
+    .team-block-abbr {
+        font-size: 26px;
+        font-weight: 800;
+        color: white;
+        letter-spacing: -0.5px;
+    }
+
+    .vs-divider {
+        font-size: 14px;
+        font-weight: 800;
+        color: #ffd700;
+        background: rgba(255,215,0,0.15);
+        border: 1px solid rgba(255,215,0,0.3);
+        border-radius: 100px;
+        padding: 6px 12px;
+        flex-shrink: 0;
+    }
+
+    .match-card-body { padding: 20px 24px; }
+
+    .match-detail-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: var(--muted);
+        margin-bottom: 10px;
+    }
+
+    .match-detail-row:last-of-type { margin-bottom: 0; }
+    .match-detail-icon { font-size: 15px; flex-shrink: 0; }
+    .match-detail-text { font-weight: 500; color: var(--text); }
+
+    .match-card-footer {
+        padding: 16px 24px;
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .match-price {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .price-from { font-size: 11px; color: var(--muted); }
+    .price-amount { font-size: 22px; font-weight: 800; color: var(--text); letter-spacing: -0.5px; }
+    .price-currency { font-size: 14px; font-weight: 500; }
+
+    .filters-bar {
+        background: white;
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+        position: sticky;
+        top: 64px;
+        z-index: 100;
+    }
+
+    .filters-inner {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        overflow-x: auto;
+    }
+
+    .filter-chip {
+        padding: 6px 16px;
+        border-radius: 100px;
+        border: 1.5px solid var(--border);
+        background: white;
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--muted);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+        text-decoration: none;
+    }
+
+    .filter-chip:hover, .filter-chip.active {
+        border-color: var(--red);
+        background: #fee2e8;
+        color: var(--red);
+    }
+
+    .no-matches {
+        text-align: center;
+        padding: 80px 20px;
+    }
+
+    .no-matches-icon { font-size: 64px; margin-bottom: 16px; }
+    .no-matches h3 { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+    .no-matches p { color: var(--muted); }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="matches-hero">
+    <div class="matches-hero-inner">
+        <div class="ipl-badge" style="margin-bottom:12px">🔴 &nbsp;IPL 2026 Season</div>
+        <h1>Book Match Tickets</h1>
+        <p>Choose from upcoming IPL fixtures and grab your seats before they sell out</p>
+    </div>
+</div>
+
+<div class="filters-bar">
+    <div class="filters-inner">
+        <a href="#" class="filter-chip active">All Matches</a>
+        <a href="#" class="filter-chip">This Week</a>
+        <a href="#" class="filter-chip">CSK</a>
+        <a href="#" class="filter-chip">MI</a>
+        <a href="#" class="filter-chip">RCB</a>
+        <a href="#" class="filter-chip">KKR</a>
+        <a href="#" class="filter-chip">SRH</a>
+        <a href="#" class="filter-chip">RR</a>
+    </div>
+</div>
+
+<div class="page-content" style="padding-top:40px;padding-bottom:60px">
+
+    {% if matches %}
+    <div class="row g-4">
+        {% for match in matches %}
+        <div class="col-lg-4 col-md-6">
+            <div class="match-card">
+                <div class="match-card-header">
+                    <div class="match-meta">
+                        <span class="match-number">Match #{{ loop.index }}</span>
+                        <span class="match-live-badge">● UPCOMING</span>
+                    </div>
+                    <div class="match-teams">
+                        <div class="team-block">
+                            <div class="team-block-abbr">{{ match[1] }}</div>
+                        </div>
+                        <div class="vs-divider">VS</div>
+                        <div class="team-block">
+                            <div class="team-block-abbr">{{ match[2] }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="match-card-body">
+                    <div class="match-detail-row">
+                        <span class="match-detail-icon">📍</span>
+                        <span class="match-detail-text">{{ match[3] }}</span>
+                    </div>
+                    <div class="match-detail-row">
+                        <span class="match-detail-icon">📅</span>
+                        <span class="match-detail-text">{{ match[4] }}</span>
+                    </div>
+                    <div class="match-detail-row">
+                        <span class="match-detail-icon">🕐</span>
+                        <span class="match-detail-text">7:30 PM IST</span>
+                    </div>
+                </div>
+
+                <div class="match-card-footer">
+                    <div class="match-price">
+                        <span class="price-from">Starting from</span>
+                        <span class="price-amount"><span class="price-currency">₹</span>{{ match[5] }}</span>
+                    </div>
+                    <a href="/book/{{ match[0] }}" class="btn-book">Book Now →</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="no-matches">
+        <div class="no-matches-icon">🏟️</div>
+        <h3>No matches available</h3>
+        <p>Check back soon for upcoming IPL fixtures</p>
+    </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

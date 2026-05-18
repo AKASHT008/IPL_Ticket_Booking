@@ -1,0 +1,389 @@
+{% extends 'base.html' %}
+{% block title %}Book Ticket – {{ match[1] }} vs {{ match[2] }}{% endblock %}
+
+{% block extra_head %}
+<style>
+    .booking-page {
+        padding: 40px 0 80px;
+    }
+
+    .booking-grid {
+        display: grid;
+        grid-template-columns: 1fr 380px;
+        gap: 28px;
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    .match-summary-card {
+        background: linear-gradient(135deg, #0a0a1a 0%, #1a0028 100%);
+        border-radius: 20px;
+        padding: 32px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .match-summary-card::before {
+        content: '🏏';
+        position: absolute;
+        right: -10px;
+        bottom: -20px;
+        font-size: 150px;
+        opacity: 0.07;
+    }
+
+    .match-summary-teams {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 20px;
+        margin-bottom: 24px;
+    }
+
+    .summary-team-name {
+        font-size: 32px;
+        font-weight: 800;
+        letter-spacing: -0.8px;
+    }
+
+    .summary-vs {
+        font-size: 16px;
+        font-weight: 800;
+        color: #ffd700;
+        background: rgba(255,215,0,0.15);
+        border-radius: 100px;
+        padding: 8px 16px;
+    }
+
+    .match-meta-pills {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .meta-pill {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.15);
+        border-radius: 100px;
+        padding: 6px 14px;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .booking-form-card {
+        background: white;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+    }
+
+    .booking-form-header {
+        background: #f9fafb;
+        border-bottom: 1px solid var(--border);
+        padding: 20px 28px;
+    }
+
+    .booking-form-header h3 {
+        font-size: 18px;
+        font-weight: 800;
+        margin: 0;
+    }
+
+    .booking-form-body { padding: 28px; }
+
+    .form-group { margin-bottom: 20px; }
+
+    .seats-control {
+        display: flex;
+        align-items: center;
+        gap: 0;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        overflow: hidden;
+        width: fit-content;
+    }
+
+    .seats-btn {
+        width: 44px;
+        height: 44px;
+        background: #f9fafb;
+        border: none;
+        font-size: 20px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: background 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text);
+    }
+
+    .seats-btn:hover { background: #fee2e8; color: var(--red); }
+
+    .seats-display {
+        width: 60px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: 800;
+        border: none;
+        border-left: 1.5px solid var(--border);
+        border-right: 1.5px solid var(--border);
+        outline: none;
+        font-family: 'DM Sans', sans-serif;
+        background: white;
+    }
+
+    .food-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .food-option {
+        position: relative;
+    }
+
+    .food-option input[type="checkbox"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+    }
+
+    .food-option label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 12px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s;
+    }
+
+    .food-option input:checked + label {
+        border-color: var(--red);
+        background: #fee2e8;
+        color: var(--red);
+    }
+
+    .food-option label:hover { border-color: #fca5a5; background: #fff5f7; }
+
+    .food-emoji { font-size: 20px; }
+
+    /* Sticky order summary */
+    .order-summary {
+        background: white;
+        border-radius: 20px;
+        border: 1px solid var(--border);
+        overflow: hidden;
+        position: sticky;
+        top: 88px;
+    }
+
+    .order-summary-header {
+        background: #f9fafb;
+        border-bottom: 1px solid var(--border);
+        padding: 20px 24px;
+    }
+
+    .order-summary-header h4 { font-size: 16px; font-weight: 800; margin: 0; }
+
+    .order-summary-body { padding: 24px; }
+
+    .summary-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        color: var(--muted);
+        margin-bottom: 12px;
+    }
+
+    .summary-row span:last-child { font-weight: 600; color: var(--text); }
+
+    .summary-divider { border: none; border-top: 1px solid var(--border); margin: 16px 0; }
+
+    .summary-total {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 18px;
+        font-weight: 800;
+    }
+
+    .submit-btn {
+        width: 100%;
+        background: var(--red);
+        color: white;
+        border: none;
+        padding: 14px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: 'DM Sans', sans-serif;
+        cursor: pointer;
+        transition: all 0.2s;
+        margin-top: 20px;
+    }
+
+    .submit-btn:hover {
+        background: var(--red-dark);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 16px rgba(232,0,45,0.3);
+    }
+
+    @media (max-width: 768px) {
+        .booking-grid { grid-template-columns: 1fr; }
+        .order-summary { position: static; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="booking-page">
+    <div class="page-content">
+
+        <!-- Breadcrumb -->
+        <div style="margin-bottom:24px;font-size:13px;color:var(--muted)">
+            <a href="/matches" style="color:var(--muted);text-decoration:none">Matches</a>
+            <span style="margin:0 8px">›</span>
+            <span style="color:var(--text);font-weight:600">Book Ticket</span>
+        </div>
+
+        <div class="booking-grid">
+            <div>
+                <!-- Match Summary -->
+                <div class="match-summary-card">
+                    <div class="match-summary-teams">
+                        <span class="summary-team-name">{{ match[1] }}</span>
+                        <span class="summary-vs">VS</span>
+                        <span class="summary-team-name">{{ match[2] }}</span>
+                    </div>
+                    <div class="match-meta-pills">
+                        <div class="meta-pill">📍 {{ match[3] }}</div>
+                        <div class="meta-pill">📅 {{ match[4] }}</div>
+                        <div class="meta-pill">💰 ₹{{ match[5] }} per seat</div>
+                    </div>
+                </div>
+
+                <!-- Booking Form -->
+                <div class="booking-form-card">
+                    <div class="booking-form-header">
+                        <h3>🎟️ Select Seats & Add-ons</h3>
+                    </div>
+                    <div class="booking-form-body">
+                        <form method="POST" id="bookingForm">
+                            <div class="form-group">
+                                <label class="ipl-label">Number of Seats</label>
+                                <div class="seats-control">
+                                    <button type="button" class="seats-btn" onclick="changeSeats(-1)">−</button>
+                                    <input class="seats-display" type="number" name="seats" id="seats" value="1" min="1" max="10" required>
+                                    <button type="button" class="seats-btn" onclick="changeSeats(1)">+</button>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="ipl-label">Add Stadium Food <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+                                <div class="food-grid">
+                                    <div class="food-option">
+                                        <input type="checkbox" id="food-popcorn" name="food" value="Popcorn">
+                                        <label for="food-popcorn">
+                                            <span class="food-emoji">🍿</span> Popcorn
+                                        </label>
+                                    </div>
+                                    <div class="food-option">
+                                        <input type="checkbox" id="food-burger" name="food" value="Burger">
+                                        <label for="food-burger">
+                                            <span class="food-emoji">🍔</span> Burger
+                                        </label>
+                                    </div>
+                                    <div class="food-option">
+                                        <input type="checkbox" id="food-drink" name="food" value="Cold Drink">
+                                        <label for="food-drink">
+                                            <span class="food-emoji">🥤</span> Cold Drink
+                                        </label>
+                                    </div>
+                                    <div class="food-option">
+                                        <input type="checkbox" id="food-nachos" name="food" value="Nachos">
+                                        <label for="food-nachos">
+                                            <span class="food-emoji">🌮</span> Nachos
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mobile submit -->
+                            <button type="submit" class="submit-btn d-lg-none">Confirm Booking →</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="order-summary">
+                <div class="order-summary-header">
+                    <h4>Order Summary</h4>
+                </div>
+                <div class="order-summary-body">
+                    <div class="summary-row">
+                        <span>{{ match[1] }} vs {{ match[2] }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Price per seat</span>
+                        <span>₹{{ match[5] }}</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Seats selected</span>
+                        <span id="summary-seats">1</span>
+                    </div>
+                    <hr class="summary-divider">
+                    <div class="summary-total">
+                        <span>Total</span>
+                        <span style="color:var(--red)" id="summary-total">₹{{ match[5] }}</span>
+                    </div>
+
+                    <button type="submit" form="bookingForm" class="submit-btn d-none d-lg-block" style="display:block!important">
+                        Confirm Booking →
+                    </button>
+
+                    <p style="font-size:12px;color:var(--muted);text-align:center;margin-top:12px">
+                        🔒 Secured checkout · Instant confirmation
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const pricePerSeat = {{ match[5] }};
+
+    function changeSeats(delta) {
+        let input = document.getElementById('seats');
+        let val = parseInt(input.value) + delta;
+        if (val < 1) val = 1;
+        if (val > 10) val = 10;
+        input.value = val;
+        updateSummary(val);
+    }
+
+    document.getElementById('seats').addEventListener('input', function() {
+        updateSummary(parseInt(this.value) || 1);
+    });
+
+    function updateSummary(seats) {
+        document.getElementById('summary-seats').textContent = seats;
+        document.getElementById('summary-total').textContent = '₹' + (seats * pricePerSeat).toLocaleString('en-IN');
+    }
+</script>
+{% endblock %}
